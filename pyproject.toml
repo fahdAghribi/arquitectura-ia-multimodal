@@ -1,0 +1,18 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning", "ignore::UserWarning"]
+
+[tool.ruff]
+line-length = 140
+target-version = "py312"
+extend-exclude = ["frontend", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501", "B008"]
+
+[tool.pyright]
+extraPaths = ["backend", "scripts"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]

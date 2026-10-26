@@ -1,0 +1,66 @@
+{
+  "realm": "asesoria-realm",
+  "displayName": "Asistente de trámites tributarios",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "bruteForceProtected": true,
+  "internationalizationEnabled": true,
+  "supportedLocales": ["es"],
+  "defaultLocale": "es",
+  "accessTokenLifespan": 900,
+  "ssoSessionIdleTimeout": 3600,
+  "roles": {
+    "realm": [
+      { "name": "cliente", "description": "Cliente del despacho: consulta sus trámites y expedientes" },
+      { "name": "gestor", "description": "Gestor del despacho: revisa y aprueba las respuestas a clientes; ve todos los expedientes" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "pwa-client",
+      "name": "PWA Asistente tributario",
+      "enabled": true,
+      "publicClient": true,
+      "protocol": "openid-connect",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "redirectUris": ["http://localhost/*", "https://localhost/*", "http://localhost:8096/*", "https://localhost:8456/*", "http://localhost:5173/*"],
+      "webOrigins": ["+"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://localhost/*##https://localhost/*##http://localhost:8096/*##https://localhost:8456/*##http://localhost:5173/*"
+      },
+      "defaultClientScopes": ["web-origins", "profile", "roles", "email"]
+    }
+  ],
+  "users": [
+    {
+      "username": "cliente.ana", "enabled": true, "emailVerified": true,
+      "firstName": "Ana", "lastName": "Martín", "email": "cliente.ana@example.test",
+      "credentials": [{ "type": "password", "value": "ana123", "temporary": false }],
+      "realmRoles": ["cliente"]
+    },
+    {
+      "username": "cliente.marcos", "enabled": true, "emailVerified": true,
+      "firstName": "Marcos", "lastName": "Gil", "email": "cliente.marcos@example.test",
+      "credentials": [{ "type": "password", "value": "marcos123", "temporary": false }],
+      "realmRoles": ["cliente"]
+    },
+    {
+      "username": "cliente.nexo", "enabled": true, "emailVerified": true,
+      "firstName": "Nexo Digital", "lastName": "SL", "email": "cliente.nexo@example.test",
+      "credentials": [{ "type": "password", "value": "nexo123", "temporary": false }],
+      "realmRoles": ["cliente"]
+    },
+    {
+      "username": "gestor.laura", "enabled": true, "emailVerified": true,
+      "firstName": "Laura", "lastName": "Gestora", "email": "gestor.laura@example.test",
+      "credentials": [{ "type": "password", "value": "laura123", "temporary": false }],
+      "realmRoles": ["gestor"]
+    }
+  ]
+}

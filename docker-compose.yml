@@ -1,0 +1,144 @@
+# Asistente de trámites tributarios para clientes de un despacho (PoC)
+# Todos los puertos del anfitrión son configurables en .env.
+
+networks:
+  trib-network:
+    driver: bridge
+
+volumes:
+  qdrant_data:
+  keycloak_data:
+  extracted_media:
+  expedientes_data:
+
+services:
+  # Frontend PWA en React (nginx: estáticos + proxy same-origin hacia API y Keycloak)
+  pwa-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: trib-pwa-frontend
+    ports:
+      - "${PWA_HTTP_PORT:-80}:80"
+      - "${PWA_HTTPS_PORT:-443}:443"
+    environment:
+      - REACT_APP_API_GATEWAY_URL=http://fastapi-backend:8000
+      - REACT_APP_KEYCLOAK_URL=http://keycloak:8080
+      - REACT_APP_KEYCLOAK_REALM=asesoria-realm
+      - REACT_APP_KEYCLOAK_CLIENT_ID=pwa-client
+      - TLS_EXTRA_SAN=${TLS_EXTRA_SAN:-}
+    depends_on:
+      fastapi-backend:
+        condition: service_healthy
+    networks:
+      - trib-network
+    restart: always
+
+  # API Gateway y core agéntico (FastAPI + LangGraph)
+  fastapi-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: trib-fastapi-backend
+    ports:
+      - "${API_HOST_PORT:-8000}:8000"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - PORT=8000
+      - VECTOR_DB_HOST=vector-db
+      - VECTOR_DB_PORT=6333
+      - FASTMCP_TOOLS_URL=http://fastmcp-tools:9000
+      - KEYCLOAK_SERVER_URL=http://keycloak:8080/
+      - KEYCLOAK_REALM=asesoria-realm
+      - MCP_APPROVAL_SECRET=${MCP_APPROVAL_SECRET:-change-me-approval-secret}
+    volumes:
+      - extracted_media:/app/static/extracted_images
+      - ./data:/app/data
+      - ./scripts:/app/scripts:ro
+    depends_on:
+      vector-db:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+      fastmcp-tools:
+        condition: service_healthy
+    healthcheck:
+      # Liveness: /health responde 200 aunque algún servicio esté degradado (ver campo "status").
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 240s
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - trib-network
+    restart: always
+
+  # Servidor FastMCP de expedientes del despacho
+  fastmcp-tools:
+    build:
+      context: ./mcp-servers
+      dockerfile: Dockerfile
+    container_name: trib-fastmcp-tools
+    ports:
+      - "${MCP_HOST_PORT:-9000}:9000"
+    environment:
+      - PORT=9000
+      - EXPEDIENTES_DB_PATH=/app/data/expedientes.db
+      - MCP_APPROVAL_SECRET=${MCP_APPROVAL_SECRET:-change-me-approval-secret}
+    volumes:
+      - expedientes_data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - trib-network
+    restart: always
+
+  # Base de datos vectorial (Qdrant)
+  vector-db:
+    image: qdrant/qdrant:v1.19.2
+    container_name: trib-vector-db
+    ports:
+      - "${QDRANT_HOST_PORT:-6333}:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      # La imagen de Qdrant no incluye curl: se usa /dev/tcp de bash contra /readyz.
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/6333 && printf \"GET /readyz HTTP/1.0\\r\\n\\r\\n\" >&3 && grep -q \"all shards are ready\" <&3'"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - trib-network
+    restart: always
+
+  # Identidad y acceso (Keycloak)
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.1
+    container_name: trib-keycloak
+    command: start-dev --import-realm --proxy edge
+    environment:
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN:-admin}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD:-admin_password}
+      - KC_DB=dev-file
+      - KC_HEALTH_ENABLED=true
+    ports:
+      - "${KEYCLOAK_HOST_PORT:-8080}:8080"
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+      - ./keycloak/realm-asesoria.json:/opt/keycloak/data/import/realm-asesoria.json:ro
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8080 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - trib-network
+    restart: always

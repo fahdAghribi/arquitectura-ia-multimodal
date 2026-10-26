@@ -1,0 +1,22 @@
+{
+  "_descripcion": "Metadatos de cada documento indexado. 'vigente': false marca ejercicios antiguos; el agente avisa al citarlos. Los documentos proceden de publicaciones informativas de la AEAT descargadas por el despacho.",
+  "documentos": [
+    {"archivo": "Modelo_100._Declaración_del_Impuesto_sobre_la_Renta_de_las_Personas_Físicas_2025.pdf", "doc_id": "AEAT-M100-IRPF-2025", "titulo": "Modelo 100. Declaración del IRPF 2025", "impuesto": "IRPF", "ejercicio": 2025, "tipo": "manual_practico", "vigente": true},
+    {"archivo": "ManualRenta2025Parte2_es_es.pdf", "doc_id": "AEAT-MP-IRPF-2025-P2", "titulo": "Manual práctico de Renta 2025. Parte 2: deducciones autonómicas", "impuesto": "IRPF", "ejercicio": 2025, "tipo": "manual_practico", "vigente": true},
+    {"archivo": "RentaWEB2025.pdf", "doc_id": "AEAT-APP-RENTAWEB-2025", "titulo": "Manual de ayuda Renta WEB 2025", "impuesto": "IRPF", "ejercicio": 2025, "tipo": "manual_aplicacion", "vigente": true},
+    {"archivo": "Cartera_de_valores.pdf", "doc_id": "AEAT-CARTERA-VALORES", "titulo": "Cartera de valores", "impuesto": "IRPF", "ejercicio": null, "tipo": "ayuda_servicio", "vigente": true},
+    {"archivo": "Manual_Sociedades_2025.pdf", "doc_id": "AEAT-MP-IS-2025", "titulo": "Manual práctico de Sociedades 2025", "impuesto": "IS", "ejercicio": 2025, "tipo": "manual_practico", "vigente": true},
+    {"archivo": "SociedadesWeb_2025.pdf", "doc_id": "AEAT-APP-SOCIEDADESWEB-2025", "titulo": "Manual de ayuda Sociedades WEB 2025", "impuesto": "IS", "ejercicio": 2025, "tipo": "manual_aplicacion", "vigente": true},
+    {"archivo": "Modelo_200._Declaración_del_Impuesto_sobre_Sociedades_2019.pdf", "doc_id": "AEAT-M200-IS-2019", "titulo": "Modelo 200. Declaración del Impuesto sobre Sociedades 2019", "impuesto": "IS", "ejercicio": 2019, "tipo": "ayuda_modelo", "vigente": false},
+    {"archivo": "Manual_IVA_2026.pdf", "doc_id": "AEAT-MP-IVA-2026", "titulo": "Manual práctico de IVA 2026", "impuesto": "IVA", "ejercicio": 2026, "tipo": "manual_practico", "vigente": true},
+    {"archivo": "Guía_de_importación_y_exportación_de_envíos_de_escaso_valor_-_Cambios_en_IVA__2021_.pdf", "doc_id": "AEAT-GUIA-ESCASO-VALOR-2021", "titulo": "Guía de importación y exportación de envíos de escaso valor (cambios en IVA 2021)", "impuesto": "IVA", "ejercicio": 2021, "tipo": "guia", "vigente": true},
+    {"archivo": "Modelo_035._Registro_Censal_de_los_regímenes_especiales_aplicables_a_las_prestaciones_de_servicios__ventas_a_distancia_de_bienes_y_determinadas_entregas_interiores..pdf", "doc_id": "AEAT-M035-CENSAL", "titulo": "Modelo 035. Registro censal de los regímenes especiales de ventanilla única (OSS/IOSS)", "impuesto": "IVA", "ejercicio": null, "tipo": "ayuda_modelo", "vigente": true},
+    {"archivo": "Manual_práctico_de_Patrimonio_2025..pdf", "doc_id": "AEAT-MP-IP-2025", "titulo": "Manual práctico de Patrimonio 2025", "impuesto": "IP", "ejercicio": 2025, "tipo": "manual_practico", "vigente": true},
+    {"archivo": "Patrimonio_2025.pdf", "doc_id": "AEAT-M714-IP-2025", "titulo": "Patrimonio 2025 (Modelo 714): ayuda a la cumplimentación", "impuesto": "IP", "ejercicio": 2025, "tipo": "ayuda_modelo", "vigente": true},
+    {"archivo": "Manual_de_Tributación_de_No_Residentes__octubre_2026_.pdf", "doc_id": "AEAT-MP-IRNR-2026", "titulo": "Manual de Tributación de No Residentes (octubre 2026)", "impuesto": "IRNR", "ejercicio": 2026, "tipo": "manual_practico", "vigente": true},
+    {"archivo": "Manual_de_ayuda__Censos_WEB.pdf", "doc_id": "AEAT-APP-CENSOSWEB", "titulo": "Manual de ayuda Censos WEB (modelos 036/037)", "impuesto": "CENSAL", "ejercicio": null, "tipo": "manual_aplicacion", "vigente": true},
+    {"archivo": "Manual_Usuario_Verifactu_Accesible.pdf", "doc_id": "AEAT-APP-VERIFACTU", "titulo": "Guía de usuario de la aplicación gratuita de facturación (Verifactu) v1.0", "impuesto": "FACTURACION", "ejercicio": 2025, "tipo": "manual_aplicacion", "vigente": true},
+    {"archivo": "Manual_Tecnico_WS_Masivo_Calidad_Datos_Identificativos.pdf", "doc_id": "AEAT-WS-CALIDAD-DATOS", "titulo": "Manual técnico del servicio web masivo de calidad de datos identificativos", "impuesto": "TECNICO", "ejercicio": null, "tipo": "tecnico", "vigente": true},
+    {"archivo": "Información_sobre_la_presentación_mediante_Web_Service.pdf", "doc_id": "AEAT-WS-PRESENTACION", "titulo": "Información sobre la presentación mediante Web Service", "impuesto": "TECNICO", "ejercicio": null, "tipo": "tecnico", "vigente": true}
+  ]
+}
